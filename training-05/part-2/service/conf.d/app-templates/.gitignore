@@ -1,0 +1,12 @@
+build/
+bower_components/
+node_modules/
+dist.prod/
+CMakeCache.txt
+Makefile
+*.so
+nbproject
+.vscode
+*.tar.gz
+.*.sw*
+_book

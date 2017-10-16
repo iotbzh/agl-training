@@ -1,0 +1,16 @@
+Priority: optional
+Maintainer: @PROJECT_AUTHOR@ <@PROJECT_AUTHOR_MAIL@>
+Source: @NPKG_PROJECT_NAME@
+Build-Depends: debhelper (>= 5),
+ pkg-config,
+ cmake,
+ gcc,
+ g++,
+@DEB_PKG_DEPS@
+Standards-Version: 3.8.2
+Homepage: @PROJECT_URL@
+
+Package: @NPKG_PROJECT_NAME@
+Section: libs
+Architecture: any
+Description: @PROJECT_DESCRIPTION@

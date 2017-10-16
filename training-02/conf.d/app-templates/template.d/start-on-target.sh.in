@@ -1,0 +1,25 @@
+#!/bin/sh
+#
+# File:   start-on-target.sh
+# Author: Fulup Ar Foll @ IoT.bzh
+# Object: Forward signal (SIGTERM) to remote process
+# Created on 24-May-2017, 09:23:37
+# Usage: remote-target-populate update script under ./build directory
+
+# Do not change manually use 'make remote-target-populate'
+export RSYNC_TARGET=@RSYNC_TARGET@
+export PROJECT_NAME=@PROJECT_NAME@
+export RSYNC_PREFIX=@RSYNC_PREFIX@/@PROJECT_NAME@
+export AFB_REMPORT=@AFB_REMPORT@
+export AFB_TOKEN=@AFB_TOKEN@
+
+exec ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -tt $RSYNC_TARGET << EOF
+    afb-daemon --workdir=$RSYNC_PREFIX --monitoring --port=$AFB_REMPORT --roothttp=./htdocs --ldpath=./lib --verbose --token=$AFB_TOKEN &
+    PID_DAEMON=\$!
+    trap "echo REMOTE-SIGNAL TRAP; kill -15 \$PID_DAEMON" INT QUIT TERM EXIT
+    echo "Target Process Waiting for command"
+
+    # wait for daemon to finish
+    wait \$PID_DAEMON
+    exit
+EOF

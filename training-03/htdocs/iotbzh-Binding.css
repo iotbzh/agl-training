@@ -1,0 +1,59 @@
+body.page-content {
+	height: 100%;
+	width: auto;
+	margin-top: 20px;
+	background: url("assets/background_iot_bzh_light.jpg") 0 0 no-repeat;
+	background-size: cover;
+	background-position: center;
+}
+
+img {
+	float: right;
+}
+
+#question,
+#output,
+#outevt {
+	white-space: pre-wrap;
+}
+
+button {
+	margin-right: 10px;
+	padding: 6px 8px;
+	font-size: large;
+}
+
+pre {
+	outline: 1px solid #ccc;
+	padding: 5px;
+	margin: 5px;
+	background-color: white;
+	opacity: 0.85;
+	min-height: 5pc;
+	max-height: 10pc;
+	overflow: auto;
+}
+
+pre#output {
+	max-height: 30pc;
+}
+
+.string {
+	color: green;
+}
+
+.number {
+	color: darkorange;
+}
+
+.boolean {
+	color: blue;
+}
+
+.null {
+	color: magenta;
+}
+
+.key {
+	color: red;
+}

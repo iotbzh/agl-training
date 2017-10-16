@@ -1,0 +1,19 @@
+#!/bin/sh
+#
+# File:   install-wgt-on-target.sh
+# Author: Sebastien Douheret @ IoT.bzh
+# Object: install widget on target
+# Created on 24-May-2017, 09:23:37
+# Usage:
+
+# Do not change manually use 'make remote-target-populate'
+export RSYNC_TARGET=@RSYNC_TARGET@
+export WGT_FILE_L=@CMAKE_CURRENT_BINARY_DIR@/@PROJECT_NAME@.wgt
+export WGT_FILE_T=/tmp/@PROJECT_NAME@.wgt
+
+scp $WGT_FILE_L $RSYNC_TARGET:$WGT_FILE_T \
+    && ssh -o "StrictHostKeyChecking no" -tt $RSYNC_TARGET -- \
+        afm-util install $WGT_FILE_T
+
+#    && rm -f $WGT_FILE_T
+

@@ -1,0 +1,39 @@
+# gdb-remote.init file for IDE
+# Object: allow to use standard gdb to remote debug a target
+# Usage: remote-target-populate update script under ./build directory
+# Author: Fulup Ar Foll (IoT.bzh)
+# Reference: https://blog.flameeyes.eu/2010/02/remote-debugging-with-gdb-part-2-gdb/
+#
+# Warning:
+#  - on target start with $GDB ./target/gdb-cross-root@$TARGET.ini  
+#  - Netbeans impose debug-command to point on a local instance of afb-daemon binary
+#  - --ldpath should be absolute as solib-search-path refuse to work as documented
+
+# xds-gdb annotation to point where it should 
+# :XDS-ENV: XDS_PROJECT_ID=@XDS_PROJECT_ID@
+# :XDS-ENV: XDS_SDK_ID=@XDS_SDK_ID@
+# :XDS-ENV: XDS_SERVER_URL=@XDS_SERVER_URL@
+
+# Start gdbserver on target and connect through SSH link WARNING:
+target remote | ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null @RSYNC_TARGET@ gdbserver - \
+       /usr/bin/afb-daemon --port=@AFB_REMPORT@ --workdir=@RSYNC_PREFIX@/@PROJECT_NAME@ --roothttp=htdocs --ldpaths=@RSYNC_PREFIX@/@PROJECT_NAME@/lib --verbose --token=@AFB_TOKEN@
+
+# Disable auto answer no on questions and to set breakpoint
+set confirm off
+
+# Disable auto load of libraries to improved perf
+set auto-solib-add off
+
+# Define path for project libraries
+set solib-search-path ${PROJECT_PKG_BUILD_DIR}
+
+# Replace run by continue done by xds-gdb
+
+# Manually load project libraries when loaded by afb-daemon
+tbreak @GDB_INITIAL_BREAK@
+commands
+sharedlibrary @RSYNC_PREFIX@/@PROJECT_NAME@
+continue
+end
+
+

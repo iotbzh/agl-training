@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widget xmlns="http://www.w3.org/ns/widgets" id="@PROJECT_NAME@" version="@PROJECT_VERSION@">
+	<name>@PROJECT_NAME@</name>
+	<icon src="@PROJECT_ICON@"/>
+	<content src="@WIDGET_ENTRY_POINT@" type="@WIDGET_TYPE@"/>
+	<description>@PROJECT_DESCRIPTION@</description>
+	<author>@PROJECT_AUTHOR@ &lt;@PROJECT_AUTHOR_MAIL@&gt;</author>
+	<license>@PROJECT_LICENSE@</license>
+
+<!-- Feature : required-api ------------------------------------------------------
+#### param name="#target" OPTIONAL
+
+Declares the name of the unit requiring the listed apis.
+Only one instance of the param "#target" is allowed.
+When there is not instance of this param, it behave as if
+the target main was specified.
+
+#### param name=[required api name]
+
+The name is the name of the required API.
+The value describes how to connect to the required api.
+It is either:
+
+ - local: The binding is a local shared object.
+	In that case, the name is the relative path of the
+	shared object to be loaded.
+ - auto: The framework set automatically the kind of
+	the connection to the API
+ - ws: The framework connect using internal websockets
+ - dbus: The framework connect using internal dbus
+ - link: The framework connect in memory by dinamically linking
+
+Example:
+	<feature name="urn:AGL:widget:required-api">
+		<param name="#target" value="low-can" />
+		<param name="<a-required-api>" value="auto" />
+		<param name="<another-required-api>" value="auto" />
+	</feature>
+--------------------------------------------------------------------------------->
+
+<!-- Feature : required-permission ------------------------------------------
+
+List of the permissions required by the unit.
+Each required permission must be explicited using a <param> entry.
+
+#### param name="#target" OPTIONAL
+
+Declares the name of the unit requiring the listed permissions.
+Only one instance of the param "#target" is allowed.
+When there is not instance of this param, it behave as if
+the target main was specified.
+
+#### param name=[required permission name]
+
+The value is either:
+- required: the permission is mandatorily needed except if the feature
+isn't required (required="false") and in that case it is optional.
+- optional: the permission is optional
+
+Example:
+<feature name="urn:AGL:widget:required-permission">
+	<param name="#target" value="geoloc" />
+	<param name="urn:AGL:permission:real-time" value="required" />
+	<param name="urn:AGL:permission:syscall:*" value="required" />
+</feature>
+--------------------------------------------------------------------------------->
+
+<!-- Feature : provided-unit -------------------------------------------------
+This feature is made for declaring new units
+for the widget. Using this feature, a software publisher
+can provide more than one application in the same widget.
+
+#### param name="#target" REQUIRED
+
+Declares the name of the unit. The default unit, the unit
+of the main of the widget, has the name "main". The value
+given here must be unique within the widget file. It will
+be used in other places of the widget config.xml file to
+designate the unit.
+
+Only one instance of the param "#target" is allowed.
+The value can't be "main".
+
+#### param name="content.type" REQUIRED
+
+The mimetype of the provided unit.
+
+#### param name="content.src"
+
+A path to the file (subject to localisation), this is the entry point
+to that unit.
+
+#### other parameters
+
+The items that can be set for the main unit
+can also be set using the params if needed.
+
+ - description
+ - name.content
+ - name.short
+ - ...
+
+Example:
+<feature name="urn:AGL:widget:provided-unit">
+	<param name="#target" value="geoloc" />
+	<param name="description" value="binding of name geoloc" />
+	<param name="content.src" value="index.html" />
+	<param name="content.type" value="application/vnd.agl.service" />
+</feature>
+--------------------------------------------------------------------------------->
+
+<!-- Feature: provided-api ---------------------------------------------------
+Use this feature for exporting one or more API of a unit
+to other widgets of the platform.
+
+This feature is an important feature of the framework.
+
+#### param name="#target" OPTIONAL
+
+Declares the name of the unit exporting the listed apis.
+Only one instance of the param "#target" is allowed.
+When there is not instance of this param, it behave as if
+the target main was specified.
+
+#### param name=[name of exported api]
+
+The name give the name of the api that is exported.
+
+The value is one of the following values:
+
+- ws: export the api using UNIX websocket
+- dbus: export the API using dbus
+- auto: export the api using the default method(s).
+
+Example:
+<feature name="urn:AGL:widget:provided-api">
+	<param name="#target" value="geoloc" />
+	<param name="geoloc" value="auto" />
+	<param name="moonloc" value="auto" />
+</feature>
+--------------------------------------------------------------------------------->
+</widget>

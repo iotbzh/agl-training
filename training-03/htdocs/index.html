@@ -1,0 +1,46 @@
+<html>
+
+<head>
+	<title>Simple Helloworld binding Test</title>
+	<link rel="stylesheet" href="iotbzh-Binding.css">
+	<link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+	<script type="text/javascript" src="AFB-websock.js"></script>
+	<script type="text/javascript" src="iotbzh-Binding.js"></script>
+</head>
+
+<body class="page-content" onload="init()">
+
+	<img src="assets/iot-bzh-logo-small.png">
+
+	<h1>Simple Helloworld binding Test</h1>
+
+	<button id="connected" onclick="init()">Binder WS Fail</button>
+	<button id="monitoring" onclick="window.open('/monitoring/monitor.html','_monitor_ctl')">Debug/Monitoring</a></button>
+
+	<br><br>
+
+	<div>
+		<button onclick="callbinder('helloworld','ping' ,{args:{'var1':1234, 'var2':'Test ping'}});">Send ping</button></li>
+
+		<button onclick="callbinder('helloworld','testargs' ,{'cezam': 'open'});">Send testargs OK</button></li>
+
+		<button onclick="callbinder('helloworld','testargs' ,{'foo':'toto'});">Send testargs Error</button></li>
+
+		<button onclick="callbinder('unknown_api','ping' ,{});">Send unknown Api</button></li>
+
+		<button onclick="callbinder('helloworld','unknown_verb', {});">Send unknown verb</button></li>
+	</div>
+
+	<br>
+
+	<div id="main" style="visibility:hidden">
+		<ol>
+			<li>Question
+				<pre id="question"></pre>
+			</li>
+			<li>Response
+				<pre id="output"></pre>
+			</li>
+		</ol>
+	</div>
+</body>

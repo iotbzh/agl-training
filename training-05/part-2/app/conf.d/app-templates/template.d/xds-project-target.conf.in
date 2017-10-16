@@ -1,0 +1,12 @@
+#
+#       Cmake generated Do Not Edit
+# 
+# Template:  conf.d/app-templates/template.d/xds-project.conf.in
+# Values:  $HOME/.config/app-templates/cmake/xx-projectname-xds.cmake
+#
+# WARNING: in Xdev mode $HOME is ~devel HOME on xds-docker
+#
+export XDS_SERVER_URL=@XDS_SERVER_URL@
+export XDS_PROJECT_ID=@XDS_PROJECT_ID@
+export XDS_SDK_ID=@XDS_SDK_ID@
+

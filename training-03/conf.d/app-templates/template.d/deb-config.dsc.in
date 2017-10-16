@@ -1,0 +1,15 @@
+Format: @PROJECT_VERSION@
+Source: @NPKG_PROJECT_NAME@
+Binary: @NPKG_PROJECT_NAME@-bin
+Architecture: any
+Version: 2.0-0
+Maintainer: @PROJECT_AUTHOR@ <@PROJECT_AUTHOR_MAIL@>
+Standards-Version: 3.8.2
+Homepage: @PROJECT_URL@
+Build-Depends: debhelper (>= 5),
+ pkg-config,
+ cmake,
+ gcc,
+ g++,
+@DEB_PKG_DEPS@
+Debtransform-Tar: @NPKG_PROJECT_NAME@_@PROJECT_VERSION@.orig.tar.gz
