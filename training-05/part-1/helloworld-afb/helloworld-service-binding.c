@@ -26,37 +26,42 @@
 static afb_event helloEvt;
 static int evtCount = 10;
 
+void evtPush(int count)
+{
+    json_object *evtData;
+
+    int err = wrap_json_pack(&evtData, "{si}", "Count: ", count);
+    if(err)
+    {
+        AFB_ERROR("Can't create json object");
+        return;
+    }
+
+    afb_event_push(helloEvt, evtData);
+}
+
 static void pingSample(struct afb_req request)
 {
     static int pingcount = 0;
 
     afb_req_success_f(request, json_object_new_int(pingcount), "Ping count = %d", pingcount);
+    evtPush(pingcount);
 
     AFB_NOTICE("Verbosity macro at level notice invoked at ping invocation count = %d", pingcount);
 
     pingcount++;
 }
 
-void evtPush()
-{
-    json_object *evtData = json_object_new_object();
-    json_object *countJ = json_object_new_int(evtCount);
-
-    json_object_object_add(evtData, "Event count: ", countJ);
-
-    afb_event_push(helloEvt, evtData);
-}
-
 int timerNext (sd_event_source* source, uint64_t usec, void* context) {
     // Rearm timer if needed
     evtCount --;
     if (evtCount == 0) {
-        evtPush();
+        evtPush(evtCount);
         sd_event_source_unref(source);
         return 0;
     }
     else {
-        evtPush();
+        evtPush(evtCount);
         // otherwise validate timer for a new run
         sd_event_now(afb_daemon_get_event_loop(), CLOCK_MONOTONIC, &usec);
         sd_event_source_set_enabled(source, SD_EVENT_ONESHOT);

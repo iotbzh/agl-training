@@ -15,6 +15,7 @@
  */
 #define _GNU_SOURCE
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <wrap-json.h>
 #include <time.h>
@@ -28,25 +29,26 @@ static const char *partnerName = "helloworld";
 
 static void pingBatcher(struct afb_req request)
 {
-	int total = 0;
+	const char *total;
 	json_object *result, *queryJ = afb_req_json(request);
-	int err = wrap_json_unpack(queryJ, "{si}", "total", &total);
+	int err = wrap_json_unpack(queryJ, "{ss}", "total", &total);
 	if(err)
 	{
 		afb_req_fail_f(request, "Cannot unpack JSON %s", json_object_to_json_string(queryJ));
 		return;
 	}
 
-	while(total > 0)
+	int t = atoi(total);
+	while(t > 0)
 	{
-		total --;
+		t--;
 		if(afb_service_call_sync(partnerName, "ping", queryJ, &result) < 0)
 		{
 			afb_req_fail_f(request, "Cannot invoke ping on %s api", partnerName);
 			return;
 		}
-		afb_req_success_f(request, result, "Ping on %s OK", partnerName);
 	}
+	afb_req_success_f(request, result, "Done %d Ping on %s", t, partnerName);
 }
 
 static void subscribe(struct afb_req request)

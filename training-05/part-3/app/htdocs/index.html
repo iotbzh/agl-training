@@ -20,17 +20,22 @@
 	<br><br>
 
 	<div>
-		<button onclick="callbinder('helloworld-client','ping' ,{args:{'var1':1234, 'var2':'Test ping'}});">Send ping</button></li>
+		<input type="text" id="total" name="total" />
+		<button onclick="t=document.getElementById('total').value; callbinder('ping-batcher','ping_batch' ,{'total': t });">Send a batch ping</button></li>
 
-		<button onclick="callbinder('helloworld-client','subscribe' ,{});">Subscribe events</button></li>
+		<button onclick="callbinder('helloworld','ping' ,{args:{'var1':1234, 'var2':'Test ping'}});">Send ping</button></li>
 
-		<button onclick="callbinder('helloworld-client','testargs' ,{'cezam': 'open'});">Send testargs OK</button></li>
+		<button onclick="callbinder('ping-batcher','subscribe' ,{});">Subscribe through ping-batcher</button></li>
 
-		<button onclick="callbinder('helloworld-client','testargs' ,{'foo':'toto'});">Send testargs Error</button></li>
+		<button onclick="callbinder('helloworld','subscribe' ,{});">Subscribe</button></li>
+
+		<button onclick="callbinder('helloworld','testargs' ,{'cezam': 'open'});">Send testargs OK</button></li>
+
+		<button onclick="callbinder('helloworld','testargs' ,{'foo':'toto'});">Send testargs Error</button></li>
 
 		<button onclick="callbinder('unknown_api','ping' ,{});">Send unknown Api</button></li>
 
-		<button onclick="callbinder('helloworld-client','unknown_verb', {});">Send unknown verb</button></li>
+		<button onclick="callbinder('helloworld','unknown_verb', {});">Send unknown verb</button></li>
 	</div>
 
 	<br>
