@@ -18,9 +18,9 @@
 
 # Project Info
 # ------------------
-set(PROJECT_NAME helloworld-service)
+set(PROJECT_NAME helloworld-webui)
 set(PROJECT_VERSION "1.0")
-set(PROJECT_PRETTY_NAME "Helloworld for AGL")
+set(PROJECT_PRETTY_NAME "Helloworld WebUI for AGL")
 set(PROJECT_DESCRIPTION "Provide an AGL Helloworld Binding")
 set(PROJECT_URL "https://github.com/iotbzh/helloworld-service")
 set(PROJECT_ICON "icon.png")
@@ -114,8 +114,10 @@ set(LD_LIBRARY_PATH ${CMAKE_INSTALL_PREFIX}/lib64 ${CMAKE_INSTALL_PREFIX}/lib)
 
 # Optional location for config.xml.in
 # -----------------------------------
-set(WIDGET_ICON ${PROJECT_APP_TEMPLATES_DIR}/wgt/${PROJECT_ICON})
-set(WIDGET_CONFIG_TEMPLATE ${CMAKE_CURRENT_SOURCE_DIR}/conf.d/wgt/config.xml.in)
+set(WIDGET_ICON ${PROJECT_APP_TEMPLATset(PROJECT_NAME helloworld-webui)
+	set(PROJECT_VERSION "1.0")
+	set(PROJECT_PRETTY_NAME "Helloworld WebUI for AGL")ES_DIR}/wgt/${PROJECT_ICON})
+set(WIDGET_CONFIG_TEMPLATE ${CMAKE_SOURCE_DIR}/conf.d/wgt/config.xml.in CACHE PATH "")
 
 # Mandatory widget Mimetype specification of the main unit
 # --------------------------------------------------------------------------

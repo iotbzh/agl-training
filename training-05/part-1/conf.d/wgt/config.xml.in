@@ -12,4 +12,7 @@
   <feature name="urn:AGL:widget:required-api">
      <param name="lib/afb-helloworld.so" value="local" />
   </feature>
+  <feature name="urn:AGL:widget:required-permission">
+    <param name="urn:AGL:permission::public:hidden" value="required" />
+  </feature>
 </widget>
