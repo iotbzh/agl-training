@@ -43,8 +43,8 @@ List of existing projects:
   CKI7R47-UWNDQC3_test3
 ```
 
-Now to refer your project, just use `--id` option or use `xds-project.conf` file
-to set project id, xds server url,...
+Now to refer your project, just use `--id`, `--sdk`, ... options or simply use
+`xds-project.conf` file to set project id, xds server url,...
 Please refer to [Build from command line](http://docs.automotivelinux.org/docs/devguides/en/dev/reference/xds/part-1/4_build-first-app.html#build-from-command-line)
 doc chapter for more details about `xds-project.conf` file.
 
@@ -66,10 +66,10 @@ EOF
 
 # Generate build system using cmake
 cd build
-xds-exec --config=../xds-project.conf -- cmake ../
+xds-exec --config ../xds-project.conf -- cmake ../
 
 # Build the project
-xds-exec --config=../xds-project.conf -- make all
+xds-exec --config ../xds-project.conf -- make all
 ```
 
 Now package your application:
@@ -77,7 +77,7 @@ Now package your application:
 ```bash
 # Package your application to a widget
 cd build
-xds-exec --config=../xds-project.conf -- make widget
+xds-exec --config ../xds-project.conf -- make widget
 ```
 
 ## Deploy
@@ -85,7 +85,7 @@ xds-exec --config=../xds-project.conf -- make widget
 ### AGL target
 
 ```bash
-xds-exec --config=./xds-project.conf -- build/target/install-wgt-on-root@YOUR_BOARD_IP.sh
+xds-exec --config ./xds-project.conf -- build/target/install-wgt-on-root@YOUR_BOARD_IP.sh
 ```
 
 ## TEST
@@ -98,7 +98,7 @@ export PORT=1234
 export TOKEN=""
 
 #Start application on board
-xds-exec --config=./xds-project.conf -- build/target/start-on-root@${YOUR_BOARD_IP}.sh
+xds-exec --config ./xds-project.conf -- build/target/start-on-root@${YOUR_BOARD_IP}.sh
 
 #On an other terminal
 ssh root@${YOUR_BOARD_IP} afb-client-demo -H 127.0.0.1:${PORT}/api?token=$TOKEN helloworld ping true
