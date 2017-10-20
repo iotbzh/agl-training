@@ -1,4 +1,4 @@
-# helloworld-service
+# 2. Native development
 
 A Helloworld AGL application for AGL Training 02.
 
@@ -23,7 +23,7 @@ make
 
 ### Native Linux
 
-For native build you need to have tools **afb-daemon**.
+For native build you need to install **afb-daemon** tools.
 You can build it by your self [app-framework-binder][app-framework-binder], or use binary package from OBS: [opensuse.org/LinuxAutomotive][opensuse.org/LinuxAutomotive]
 
 ```bash
@@ -35,5 +35,5 @@ curl http://localhost:${PORT}/api/helloworld/ping
 curl http://localhost:${PORT}/api/helloworld/ping 2>/dev/null | python -m json.tool
 ```
 
-[opensuse.org/LinuxAutomotive]:https://en.opensuse.org/LinuxAutomotive
+[opensuse.org/LinuxAutomotive]:https://en.opensuse.org/LinuxAutomotive#AGL_Application_Framework
 [app-framework-binder]:https://gerrit.automotivelinux.org/gerrit/#/admin/projects/src/app-framework-binder

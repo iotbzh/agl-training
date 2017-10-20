@@ -1,14 +1,7 @@
-#  AGL Training
+# AGL Training
 
-This repository holds training exercices presented during an AGL Training
+This repository holds training exercises presented during an AGL Training
 session.
 
-This demonstrate an App development workflow and each branches represents an
-exercice.
-
-You need to switch the first branch to begin your session:
-
-```bash
-git checkout Training-01
-```
-
+This demonstrate an App development workflow and each directory represents an
+exercise.

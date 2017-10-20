@@ -1,19 +1,21 @@
-# helloworld-service
+# 3. Cross Development
 
-A Helloworld AGL application for AGL Training 03.
+This section describes how to cross build Helloworld AGL application and deploy
+it on a real target running AGL.
 
 ## Build with XDS
 
 You need to [declare your project](http://docs.automotivelinux.org/docs/devguides/en/dev/reference/xds/part-1/4_build-first-app.html#declare-project-into-xds)
 within XDS.
 
-Go to your XDS dashboard which should be at http://localhost:8000/ and use the
+Go to your XDS dashboard which should be at <http://localhost:8000/> and use the
 Web interface to add your project.
 
 ### From XDS Dashboard
 
-The you can [build using dashboard](http://docs.automotivelinux.org/docs/devguides/en/dev/reference/xds/part-1/4_build-first-app.html#build-from-xds-dashboard)
-from the build page. Just select **Project**, your **Cross SDK** and use build button:
+Then you can [cross build using dashboard](http://docs.automotivelinux.org/docs/devguides/en/dev/reference/xds/part-1/4_build-first-app.html#build-from-xds-dashboard)
+from the build page. Just select the **Project**, your **Cross SDK** and use
+build button:
 
 - **Clean**: Remove your build directory
 - **Pre-build**: Configure the project
@@ -26,14 +28,14 @@ Build results could be retrieve from `build` directory.
 
 ### From command-line
 
-[From command-line](http://docs.automotivelinux.org/docs/devguides/en/dev/reference/xds/part-1/4_build-first-app.html#build-from-command-line):
+Full document about how to build [from command-line](http://docs.automotivelinux.org/docs/devguides/en/dev/reference/xds/part-1/4_build-first-app.html#build-from-command-line).
 
 You need to determine which is the unique id of your project. You can find this
  ID in project page of XDS dashboard or you can get it from command line using
  the --list option. This option lists all existing projects ID:
 
 ```bash
-./bin/xds-exec --list
+xds-exec --list
 
 List of existing projects:
   CKI7R47-UWNDQC3_myProject
@@ -41,31 +43,39 @@ List of existing projects:
   CKI7R47-UWNDQC3_test3
 ```
 
-Now to refer your project, just use –id option or use XDS_PROJECT_ID environment variable.
+Now to refer your project, just use `--id` option or use `XDS_PROJECT_ID`
+environment variable.
 
 ```bash
-# Add xds-exec in the PATH
-export PATH=${PATH}:/opt/AGL/bin
-
 # Create a build directory
-xds-exec --id=CKI7R47-UWNDQC3_myProject --sdkid=poky-agl_aarch64_4.0.1 --url=http://localhost:8000 -- mkdir build
+# for example YOUR_PROJECT_DIR=$HOME/xds-workspace/agl-training/agl-training-03
+cd ${YOUR_PROJECT_DIR} && mkdir build
 
 # Generate build system using cmake
 xds-exec --id=CKI7R47-UWNDQC3_myProject --sdkid=poky-agl_aarch64_4.0.1 --url=http://localhost:8000 -- cd build && cmake ..
-
-#- Build the project
-xds-exec --id=CKI7R47-UWNDQC3_myProject --sdkid=poky-agl_aarch64_4.0.1 --url=http://localhost:8000 -- cd build && make all
 ```
->**Note:** To avoid to set project id, xds server url,... in each command line, you can define these settings as environment variable within an env file and just set --config option or source file before executing xds-exec. 
-Please refer to [Build from command line](http://docs.automotivelinux.org/docs/devguides/en/dev/reference/xds/part-1/4_build-first-app.html#build-from-command-line) doc chapter and more precisely the 2nd part that describe usage of `xds-project.conf` file.
+
+>**Note:** To avoid to set project id, xds server url,... in each command line, you can define these settings as environment variable within an env file and just set --config option or source file before executing xds-exec.
+> Please refer to [Build from command line](http://docs.automotivelinux.org/docs/devguides/en/dev/reference/xds/part-1/4_build-first-app.html#build-from-command-line) doc chapter and more precisely the 2nd part that describe usage of `xds-project.conf` file.
+
+```bash
+# For next command, we will use xds-project.conf file:
+cat > $YOUR_PROJECT_DIR/xds-project.conf << EOF
+  export XDS_SERVER_URL=localhost:8000
+  export XDS_PROJECT_ID=CKI7R47-UWNDQC3_myProject
+  export XDS_SDK_ID=poky-agl_aarch64_4.0.1
+EOF
+
+# Build the project
+cd build
+xds-exec --config=../xds-project.conf -- make all
+```
 
 Now package your application:
 
 ```bash
-# Setup your build environement
-. /xdt/sdk/environment-setup-aarch64-agl-linux
 # Package your application
-./conf.d/autobuild/agl/autobuild package
+xds-exec --config=./xds-project.conf -- "./conf.d/autobuild/agl/autobuild package"
 ```
 
 ## Deploy

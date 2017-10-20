@@ -1,4 +1,4 @@
-# helloworld-service
+# 4. Application development workflow
 
 A Helloworld AGL application for AGL Training 04.
 
@@ -18,12 +18,12 @@ Step by step app building flow:
  export PROJECT_DIR=$(pwd)
  git init
  ```
-2. add `app-template` submodule to the repo:
+1. add `app-template` submodule to the repo:
  ```bash
  cd ${PROJECT_DIR}
  git submodule add https://gerrit.automotivelinux.org/gerrit/apps/app-templates conf.d/app-templates
  ```
-3. Initialize your project by copying and editing the samples files:
+1. Initialize your project by copying and editing the samples files:
  ```bash
  cd ${PROJECT_DIR}/conf.d/
  mkdir -p cmake wgt
@@ -32,7 +32,7 @@ Step by step app building flow:
  cp app-templates/samples.d/config.cmake.sample cmake/config.cmake
  vim cmake/config.cmake
  ```
-4. create and develop the AGL service target:
+1. create and develop the AGL service target:
  ```bash
  cd ${PROJECT_DIR}
  mkdir -p afb-helloworld
