@@ -66,6 +66,7 @@ EOF
 
 # Generate build system using cmake
 cd build
+BUILD_DIR=$(pwd)
 xds-exec --config ../xds-project.conf -- cmake ../
 
 # Build the project
@@ -76,7 +77,7 @@ Now package your application:
 
 ```bash
 # Package your application to a widget
-cd build
+cd ${BUILD_DIR}
 xds-exec --config ../xds-project.conf -- make widget
 ```
 
@@ -85,6 +86,7 @@ xds-exec --config ../xds-project.conf -- make widget
 ### AGL target
 
 ```bash
+cd ${BUILD_DIR}
 xds-exec --config ./xds-project.conf -- build/target/install-wgt-on-root@YOUR_BOARD_IP.sh
 ```
 
@@ -95,10 +97,10 @@ xds-exec --config ./xds-project.conf -- build/target/install-wgt-on-root@YOUR_BO
 ```bash
 export YOUR_BOARD_IP=192.168.1.X
 export PORT=1234
-export TOKEN=""
+export TOKEN=HELLO # Default token is HELLO that you can retrieve in the service unit file
 
 #Start application on board
-xds-exec --config ./xds-project.conf -- build/target/start-on-root@${YOUR_BOARD_IP}.sh
+ssh root@${YOUR_BOARD_IP} "afm-util start helloworld-service@1.0
 
 #On an other terminal
 ssh root@${YOUR_BOARD_IP} afb-client-demo -H 127.0.0.1:${PORT}/api?token=$TOKEN helloworld ping true
@@ -106,6 +108,12 @@ ssh root@${YOUR_BOARD_IP} afb-client-demo -H 127.0.0.1:${PORT}/api?token=$TOKEN 
 curl http://${YOUR_BOARD_IP}:${PORT}/api/helloworld/ping?token=$TOKEN
 #For a nice display
 curl http://${YOUR_BOARD_IP}:${PORT}/api/helloworld/ping?token=$TOKEN 2>/dev/null | python -m json.tool
+```
+
+From a Web Browser, you can access the webui at:
+
+```bash
+xdg-open http://${YOUR_BOARD_IP}:${PORT}/htdocs/index.html?token=${TOKEN}
 ```
 
 [opensuse.org/LinuxAutomotive]:https://en.opensuse.org/LinuxAutomotive
