@@ -29,19 +29,25 @@ static const char *partnerName = "helloworld";
 
 static void pingBatcher(struct afb_req request)
 {
-	const char *total;
+	const char *totalS = NULL;
+	int total = 0;
 	json_object *result, *queryJ = afb_req_json(request);
-	int err = wrap_json_unpack(queryJ, "{ss}", "total", &total);
+	int err = wrap_json_unpack(queryJ, "{ss}", "total", &totalS);
 	if(err)
 	{
-		afb_req_fail_f(request, "Cannot unpack JSON %s", json_object_to_json_string(queryJ));
-		return;
+		err = wrap_json_unpack(queryJ, "{si}", "total", &total);
+		if(err)
+		{
+			afb_req_fail_f(request, "Cannot unpack JSON %s", json_object_to_json_string(queryJ));
+			return;
+		}
 	}
 
-	int t = atoi(total);
-	while(t > 0)
+	total = totalS ? atoi(totalS): total;
+	int t = total;
+	while(total > 0)
 	{
-		t--;
+		total--;
 		if(afb_service_call_sync(partnerName, "ping", queryJ, &result) < 0)
 		{
 			afb_req_fail_f(request, "Cannot invoke ping on %s api", partnerName);
