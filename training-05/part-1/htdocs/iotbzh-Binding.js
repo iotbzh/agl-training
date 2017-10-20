@@ -1,4 +1,4 @@
-var afb = new AFB("api", "mysecret");
+var afb = new AFB("api");
 var ws;
 var evtidx = 0;
 var count = 0;

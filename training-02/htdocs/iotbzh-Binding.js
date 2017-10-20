@@ -1,4 +1,5 @@
-var afb = new AFB("api", "mysecret");
+var afb = new AFB("api");
+
 var ws;
 var evtidx = 0;
 var count = 0;
@@ -21,7 +22,7 @@ var log = {
 
 	reply: function (obj) {
 		console.log("replyok:" + JSON.stringify(obj));
-		log._write("output", count + ": OK: " + log.syntaxHighlight(obj));
+		log._write("output", count + ": Reply: " + log.syntaxHighlight(obj));
 	},
 
 	error: function (obj) {

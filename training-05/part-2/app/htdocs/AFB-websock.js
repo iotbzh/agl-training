@@ -16,6 +16,11 @@ var AFB_context;
 	var UUID = undefined;
 	var TOKEN = initialtoken;
 
+	if (typeof TOKEN === 'undefined') {
+		var url = new URL(window.location);
+		TOKEN = url.searchParams.get("token");
+	}
+
 	var context = function(token, uuid) {
 		this.token = token;
 		this.uuid = uuid;
