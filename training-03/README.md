@@ -56,11 +56,15 @@ xds-exec --id=CKI7R47-UWNDQC3_myProject --sdkid=poky-agl_aarch64_4.0.1 --url=htt
 #- Build the project
 xds-exec --id=CKI7R47-UWNDQC3_myProject --sdkid=poky-agl_aarch64_4.0.1 --url=http://localhost:8000 -- cd build && make all
 ```
+>**Note:** To avoid to set project id, xds server url,... in each command line, you can define these settings as environment variable within an env file and just set --config option or source file before executing xds-exec. 
+Please refer to [Build from command line](http://docs.automotivelinux.org/docs/devguides/en/dev/reference/xds/part-1/4_build-first-app.html#build-from-command-line) doc chapter and more precisely the 2nd part that describe usage of `xds-project.conf` file.
+
+Now package your application:
 
 ```bash
-#setup your build environement
+# Setup your build environement
 . /xdt/sdk/environment-setup-aarch64-agl-linux
-#build your application
+# Package your application
 ./conf.d/autobuild/agl/autobuild package
 ```
 
