@@ -43,39 +43,41 @@ List of existing projects:
   CKI7R47-UWNDQC3_test3
 ```
 
-Now to refer your project, just use `--id` option or use `XDS_PROJECT_ID`
-environment variable.
+Now to refer your project, just use `--id` option or use `xds-project.conf` file
+to set project id, xds server url,...
+Please refer to [Build from command line](http://docs.automotivelinux.org/docs/devguides/en/dev/reference/xds/part-1/4_build-first-app.html#build-from-command-line)
+doc chapter for more details about `xds-project.conf` file.
 
 ```bash
 # Create a build directory
 # for example YOUR_PROJECT_DIR=$HOME/xds-workspace/agl-training/agl-training-03
 cd ${YOUR_PROJECT_DIR} && mkdir build
 
-# Generate build system using cmake
-xds-exec --id=CKI7R47-UWNDQC3_myProject --sdkid=poky-agl_aarch64_4.0.1 --url=http://localhost:8000 -- cd build && cmake ..
-```
-
->**Note:** To avoid to set project id, xds server url,... in each command line, you can define these settings as environment variable within an env file and just set --config option or source file before executing xds-exec.
-> Please refer to [Build from command line](http://docs.automotivelinux.org/docs/devguides/en/dev/reference/xds/part-1/4_build-first-app.html#build-from-command-line) doc chapter and more precisely the 2nd part that describe usage of `xds-project.conf` file.
-
-```bash
-# For next command, we will use xds-project.conf file:
+# Edit auto-created xds-project.conf file or create a new one
+# Note that you MUST update YOUR_BOARD_IP string by the ip or the name of your target
 cat > $YOUR_PROJECT_DIR/xds-project.conf << EOF
   export XDS_SERVER_URL=localhost:8000
   export XDS_PROJECT_ID=CKI7R47-UWNDQC3_myProject
   export XDS_SDK_ID=poky-agl_aarch64_4.0.1
+
+  export RSYNC_TARGET=root@YOUR_BOARD_IP
+  export RSYNC_PREFIX=/tmp
 EOF
 
-# Build the project
+# Generate build system using cmake
 cd build
+xds-exec --config=../xds-project.conf -- cmake ../
+
+# Build the project
 xds-exec --config=../xds-project.conf -- make all
 ```
 
 Now package your application:
 
 ```bash
-# Package your application
-xds-exec --config=./xds-project.conf -- "./conf.d/autobuild/agl/autobuild package"
+# Package your application to a widget
+cd build
+xds-exec --config=../xds-project.conf -- make widget
 ```
 
 ## Deploy
@@ -83,12 +85,7 @@ xds-exec --config=./xds-project.conf -- "./conf.d/autobuild/agl/autobuild packag
 ### AGL target
 
 ```bash
-export YOUR_BOARD_IP=X.X.X.X
-export APP_NAME=helloworld-service
-scp build/${APP_NAME}.wgt root@${YOUR_BOARD_IP}:/tmp
-ssh root@${YOUR_BOARD_IP} afm-util install /tmp/${APP_NAME}.wgt
-APP_VERSION=$(ssh root@${YOUR_BOARD_IP} afm-util list | grep ${APP_NAME}@ | cut -d"\"" -f4| cut -d"@" -f2)
-ssh root@${YOUR_BOARD_IP} afm-util start ${APP_NAME}@${APP_VERSION}
+xds-exec --config=./xds-project.conf -- build/target/install-wgt-on-root@YOUR_BOARD_IP.sh
 ```
 
 ## TEST
@@ -97,15 +94,18 @@ ssh root@${YOUR_BOARD_IP} afm-util start ${APP_NAME}@${APP_VERSION}
 
 ```bash
 export YOUR_BOARD_IP=192.168.1.X
-export PORT=8000
-ssh root@${YOUR_BOARD_IP} afb-daemon --ws-client=unix:/run/user/0/apis/ws/helloworld --port=${PORT} --token='x' -v
+export PORT=1234
+export TOKEN=""
+
+#Start application on board
+xds-exec --config=./xds-project.conf -- build/target/start-on-root@${YOUR_BOARD_IP}.sh
 
 #On an other terminal
-ssh root@${YOUR_BOARD_IP} afb-client-demo -H 127.0.0.1:${PORT}/api?token=x helloworld ping true
+ssh root@${YOUR_BOARD_IP} afb-client-demo -H 127.0.0.1:${PORT}/api?token=$TOKEN helloworld ping true
 #or
-curl http://${YOUR_BOARD_IP}:${PORT}/api/helloworld/ping?token=x
+curl http://${YOUR_BOARD_IP}:${PORT}/api/helloworld/ping?token=$TOKEN
 #For a nice display
-curl http://${YOUR_BOARD_IP}:${PORT}/api/helloworld/ping?token=x 2>/dev/null | python -m json.tool
+curl http://${YOUR_BOARD_IP}:${PORT}/api/helloworld/ping?token=$TOKEN 2>/dev/null | python -m json.tool
 ```
 
 [opensuse.org/LinuxAutomotive]:https://en.opensuse.org/LinuxAutomotive
